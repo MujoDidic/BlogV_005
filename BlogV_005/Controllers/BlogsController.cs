@@ -12,7 +12,10 @@ namespace BlogV_005.Controllers
 {
     public class BlogsController : Controller
     {
+
+
         private readonly ApplicationDbContext _context;
+       
 
         public BlogsController(ApplicationDbContext context)
         {
@@ -82,7 +85,7 @@ namespace BlogV_005.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", blog.AuthorId);
+            //ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", blog.AuthorId);
             return View(blog);
         }
 
@@ -91,7 +94,7 @@ namespace BlogV_005.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorId,Name,Description,Created,Updated,ImageData,ContentData")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Image")] Blog blog)
         {
             if (id != blog.Id)
             {
@@ -141,6 +144,8 @@ namespace BlogV_005.Controllers
             return View(blog);
         }
 
+       
+
         // POST: Blogs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -154,6 +159,15 @@ namespace BlogV_005.Controllers
             if (blog != null)
             {
                 _context.Blogs.Remove(blog);
+                
+                //Mujo dodao
+                foreach (var item in _context.Posts)
+                {
+                    if (item.BlogId == blog.Id)
+                        _context.Posts.Remove(item);
+                    
+                }
+                
             }
             
             await _context.SaveChangesAsync();

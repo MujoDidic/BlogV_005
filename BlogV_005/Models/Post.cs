@@ -7,8 +7,9 @@ namespace BlogV_005.Models
     public class Post
     {
         [Key]
-        public int? Id { get; set; }
+        public int Id { get; set; }
         [ForeignKey("Blog")]
+        [Display(Name = "Blog name")]
         public int? BlogId { get; set; }
         [ForeignKey("Author")]
         public string? BlogUserId { get; set; }
@@ -26,22 +27,22 @@ namespace BlogV_005.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Created")]
-        public DateTime Created { get; set; }
+        public DateTime? Created { get; set; }
 
         [DataType(DataType.Date)]
         [Display(Name = "Updated")]
-        public DateTime Updated { get; set; }
+        public DateTime? Updated { get; set; }
 
         public ReadyStatus ReadyStatus { get; set; }
 
-        public string Slug { get; set; }
+        public string? Slug { get; set; }
 
         [Display(Name = "Post Image")]
-        public byte[] ImageData { get; set; }
-        public string ContentType { get; set; }
+        public byte[]? ImageData { get; set; }
+        public string? ContentType { get; set; }
 
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public virtual Blog? Blog { get; set; }
         public virtual BlogUser? BlogUser { get; set; }

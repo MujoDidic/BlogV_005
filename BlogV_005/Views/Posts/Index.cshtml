@@ -18,9 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Abstract)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Content)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
@@ -30,10 +30,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReadyStatus)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
+            </th> *@
+            @* <th>
                 @Html.DisplayNameFor(model => model.ImageData)
             </th>
             <th>
@@ -44,7 +44,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BlogUser)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -57,9 +57,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Abstract)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Content)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
@@ -69,10 +69,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ReadyStatus)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
+            </td> *@
+            @* <td>
                 @Html.DisplayFor(modelItem => item.ImageData)
             </td>
             <td>
@@ -83,7 +83,7 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BlogUser.Id)
-            </td>
+            </td> *@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
