@@ -36,7 +36,7 @@ namespace BlogV_005.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(ContactMe model)
         {
-            //Eamil commes here
+            //Email commes here
             model.Message = $"{model.Message} <hr/> Phone: {model.Phone}";
             await _emailSender.SendContactEmailAsync(model.Email, model.Phone, model.Subject, model.Message);
 

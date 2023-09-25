@@ -31,21 +31,27 @@ namespace BlogV_005.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<BlogUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         //private readonly IEmailSender _emailSender;
-        private readonly IBlogEmailSender _emailSender;
+        private readonly IBlogEmailSender _blogEmailSender;
+        private readonly IImageService _imageService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<BlogUser> userManager,
             IUserStore<BlogUser> userStore,
             SignInManager<BlogUser> signInManager,
             ILogger<RegisterModel> logger,
-            IBlogEmailSender emailSender)
+            IBlogEmailSender blogEmailSender,
+            IImageService imageService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _blogEmailSender = blogEmailSender;
+            _imageService = imageService;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -73,6 +79,27 @@ namespace BlogV_005.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            /// <summary>
+            ///     Added by Mujo
+            /// </summary>
+            [Required]
+            [Display(Name = "First Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Display Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 3)]
+            public string DisplayName { get; set; }
+
+            [Display(Name = "Custom Image")]
+            public IFormFile ImageFile { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -116,6 +143,16 @@ namespace BlogV_005.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                    user.FirstName = Input.FirstName; 
+                    user.LastName = Input.LastName;
+                    user.DisplayName = Input.DisplayName;
+                    user.Email = Input.Email;
+                    user.UserName = Input.Email;
+                user.ImageData = await _imageService.EncodeImageAsync(Input.ImageFile) ??
+                                 await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]);
+                user.ContentType = Input.ImageFile is null ?
+                    Path.GetExtension(_configuration["DeafultUserImage"]) :
+                    _imageService.ContentType(Input.ImageFile);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -134,7 +171,7 @@ namespace BlogV_005.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    await _blogEmailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

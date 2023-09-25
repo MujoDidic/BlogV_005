@@ -14,18 +14,19 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using BlogV_005.Services;
 
 namespace BlogV_005.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<BlogUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IBlogEmailSender _blogEmailSender;
 
-        public ForgotPasswordModel(UserManager<BlogUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<BlogUser> userManager, IBlogEmailSender blogEmailSender)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _blogEmailSender = blogEmailSender;
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace BlogV_005.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
+                await _blogEmailSender.SendEmailAsync(
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

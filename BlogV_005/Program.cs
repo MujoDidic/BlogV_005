@@ -27,12 +27,19 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.R
 // Other services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+//Data services
 builder.Services.AddScoped<DataServices>();
 
 // Configure mail settings
-
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddScoped<IBlogEmailSender, EmailService>();
+
+//Image services
+builder.Services.AddScoped<IImageService, BasicImageService>();
+
+//Slug service
+builder.Services.AddScoped<ISlugService, BasicSlugService>();
 
 var app = builder.Build();
 
@@ -54,8 +61,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Run DataServices
-var serviceRun = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataServices>();
-await serviceRun.ManageDataAsync();
+var dataService = app.Services
+                     .CreateScope()
+                     .ServiceProvider
+                     .GetRequiredService<DataServices>();
+await dataService.ManageDataAsync();
 
 
 

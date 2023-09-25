@@ -14,7 +14,6 @@ namespace BlogV_005.ViewModels
         [StringLength(100, ErrorMessage = "The {0} must be between {2} and {1} characters long", MinimumLength = 2)]
         public string Email { get; set; }
 
-        [Required]
         [Phone]
         public string Phone { get; set; }
         

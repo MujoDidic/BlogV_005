@@ -22,8 +22,11 @@ namespace BlogV_005.Services
             email.To.Add(MailboxAddress.Parse(_mailSettings.Mail));
             email.Subject = subject;
 
-            var builder = new BodyBuilder();
-            builder.HtmlBody = $"<b>{name}</b> has sent you an email and can be reached at: <b>{emailFrom}</b><br/><br/>{htmlMessage}";
+            var builder = new BodyBuilder()
+            {
+                HtmlBody = $"<b>{name}</b> has sent you an email and can be reached at: <b>{emailFrom}</b><br/><br/>{htmlMessage}"
+            };
+           // builder.HtmlBody = $"<b>{name}</b> has sent you an email and can be reached at: <b>{emailFrom}</b><br/><br/>{htmlMessage}";
 
             email.Body = builder.ToMessageBody();
 
@@ -46,6 +49,7 @@ namespace BlogV_005.Services
             email.To.Add(MailboxAddress.Parse(emailTo));
             email.Subject = subject;
 
+            //Message or body of message
             var builder = new BodyBuilder()
             {
                 HtmlBody = htmlMessage

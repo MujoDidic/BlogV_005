@@ -33,14 +33,14 @@
                 <div class="control-group">
                     <div class="form-group col-xs-12 floating-label-form-group controls">
                         <label>Subject</label>
-                        <input type="tel" class="form-control" placeholder="Subject" asp-for="Subject" required data-validation-required-message="Please enter your Subject.">
+                        <input class="form-control" placeholder="Subject" asp-for="Subject" required data-validation-required-message="Please enter your Subject.">
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Message</label>
-                        <textarea rows="5" id="Message" class="form-control" asp-for="Message" required data-validation-required-message="Please enter a Message."></textarea>
+                        <textarea rows="5" class="form-control" asp-for="Message" id="summernote" required data-validation-required-message="Please enter a Message."></textarea>
                         <p class="help-block text-danger"></p>
                     </div>
                 </div>
@@ -53,15 +53,7 @@
 </div>
 
 @section Scripts{
-
-    @* <script>
-        //Default font size but not for placeholder...
-        $('#Message').summernote({
-            placeholder: "Message"
-        });
-    </script> *@
-
-
+    
 
 }
 
